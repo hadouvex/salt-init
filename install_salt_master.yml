@@ -1,0 +1,16 @@
+---
+- name: install salt-master
+  hosts: masters
+  remote_user: root
+  gather_facts: no
+
+  tasks:
+  - name: install salt-master
+    apt:
+      name: salt-master
+      state: present
+  - name: start and enable salt-master
+    service:
+      name: salt-master
+      state: started
+      enabled: yes

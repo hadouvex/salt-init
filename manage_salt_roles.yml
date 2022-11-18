@@ -1,0 +1,17 @@
+---
+
+- name: manage roles
+  hosts: salt
+  remote_user: root
+  gather_facts: no
+
+  tasks:
+  - name: manage roles file
+    copy:
+      src: "files/templates/salt_roles"
+      dest: "/etc/salt/grains"
+      mode: "644"
+      owner: "root"
+      group: "root"
+      force: "no"
+

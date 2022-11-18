@@ -1,0 +1,28 @@
+---
+
+- name: create saltstack dirs
+  hosts: masters
+  remote_user: root
+  gather_facts: no
+  vars:
+    dirs:
+      - name: /srv/salt
+        owner: root
+        mode: "770"
+      - name: /srv/pillar
+        owner: root
+        mode: "770"
+      - name: /srv/salt/_grains
+        owner: root
+        mode: "770"      
+
+  tasks:
+  - name: create dirs
+    file:
+      path: "{{ item.name }}"
+      state: directory
+      mode: "{{ item.mode }}"
+      owner: "{{ item.owner }}"
+      group: "root"
+    loop:
+      "{{ dirs }}"

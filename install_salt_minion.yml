@@ -1,0 +1,41 @@
+---
+- name: install salt-minion
+  hosts: minions
+  remote_user: root
+  vars:
+    salt_master: 172.19.0.1
+
+  tasks:
+  - name: install salt-minion
+    apt:
+      name: salt-minion
+      state: present
+  - name: change minion_id
+    template:
+      src: "files/templates/minion_id"
+      dest: "/etc/salt/minion_id"
+      owner: root
+      group: root
+      mode: '0644'
+    notify:
+      - restart salt-minion
+  - name: add salt host to /etc/hosts
+    lineinfile:
+      path: /etc/hosts
+      line: "{{ salt_master }} salt"
+      owner: root
+      group: root
+      mode: '0644'
+    notify:
+      - restart salt-minion
+  - name: start and enable salt-minion
+    service:
+      name: salt-minion
+      state: started
+      enabled: yes
+
+  handlers:
+    - name: restart salt-minion
+      service:
+        name: salt-minion
+        state: restarted

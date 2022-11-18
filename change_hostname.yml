@@ -1,0 +1,8 @@
+- name: update a hostname
+  hosts: salt
+  remote_user: root
+
+  tasks:
+  - name: set a hostname
+    ansible.builtin.hostname:
+      name: "{{ inventory_hostname }}"

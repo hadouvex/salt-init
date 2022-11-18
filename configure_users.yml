@@ -1,0 +1,55 @@
+---
+
+- name: create and configure users
+  hosts: salt
+  remote_user: root
+  gather_facts: no
+  vars:
+    root: ops
+
+  tasks:
+  # - name: add users
+  #   user:
+  #     name: "{{ item.name }}"
+  #     password: "{{ item.pass }}"
+  #     groups: "{{ item.groups }}"
+  #     shell: "/bin/bash"
+  #     state: "present"
+  #   loop:
+  #     "{{ users }}"
+  # - name: create authorized_keys location
+  #   file:
+  #     path: /etc/ssh_keys
+  #     state: directory
+  #     mode: '711'
+  #     owner: root
+  #     group: root
+  # - name: create authorized_keys file per user
+  #   file:
+  #     path: "/etc/ssh_keys/{{ item.name }}"
+  #     state: touch
+  #   loop:
+  #     "{{ users }}"
+  # - name: setup keys for users
+  #   authorized_key:
+  #     user: "{{ item.name }}"
+  #     state: present
+  #     key: "{{ lookup('file', './files/ssh_keys/{{ item.name }}.pub') }}"
+  #     path: "/etc/ssh_keys/{{ item.name }}"
+  #     manage_dir: false
+  #   loop:
+  #     "{{ users }}"
+  #   ignore_errors: yes
+  - name: create authorized_keys file for root
+    authorized_key:
+      user: root
+      state: present
+      key: "{{ lookup('file', './files/ssh_keys/{{ root }}.pub') }}"
+      path: "/etc/ssh_keys/root"
+  - name: fix ssh_keys directory permissions (+x)
+    file:
+      path: /etc/ssh_keys
+      state: directory
+      mode: '711'
+      owner: root
+      group: root

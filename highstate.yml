@@ -1,0 +1,18 @@
+---
+
+- name: run highstate
+  hosts: salt
+  remote_user: root
+  gather_facts: no
+
+- import_playbook: change_hostname.yml
+- import_playbook: upgrade_system.yml
+- import_playbook: configure_users.yml
+- import_playbook: configure_sshd.yml
+- import_playbook: manage_salt_repo.yml
+- import_playbook: install_salt_minion.yml
+- import_playbook: install_salt_master.yml
+- import_playbook: manage_sudoers.yml
+- import_playbook: create_salt_dirs.yml
+- import_playbook: install_git_crypt.yml
+- import_playbook: manage_salt_roles.yml

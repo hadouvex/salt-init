@@ -1,0 +1,17 @@
+---
+
+- name: manage salt repo
+  hosts: salt
+  remote_user: root
+  gather_facts: no
+
+  tasks:
+  - name: Add an apt key by id from a keyserver
+    ansible.builtin.apt_key:
+      keyserver: keyserver.ubuntu.com
+      id: 0E08A149DE57BFBE
+  - name: configure saltstack repo
+    apt_repository:
+      repo: deb https://repo.saltstack.com/py3/ubuntu/20.04/amd64/latest focal main
+      state: present
+

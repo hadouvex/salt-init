@@ -1,0 +1,26 @@
+---
+
+- name: create and configure sudoers
+  hosts: masters
+  remote_user: root
+  gather_facts: no
+  vars:
+    users:
+      - ops
+
+  tasks:
+  - name: check if sudoers file for user exists on local machine
+    local_action: stat path="files/sudoers/{{ item }}"
+    register: stat_results
+    with_items: "{{ users }}"
+    ignore_errors: True
+  - name: manage sudoers
+    copy:
+      src: "files/sudoers/{{ item.item }}"
+      dest: "/etc/sudoers.d/{{ item.item }}"
+      owner: root
+      group: root
+      mode: "0644"
+    with_items:
+      "{{ stat_results.results }}"
+    when: item.stat.exists

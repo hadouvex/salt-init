@@ -1,0 +1,11 @@
+---
+- name: install git-crypt
+  hosts: masters
+  remote_user: root
+  gather_facts: no
+
+  tasks:
+  - name: install git-crypt
+    apt:
+      name: git-crypt
+      state: present

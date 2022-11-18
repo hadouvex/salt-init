@@ -1,0 +1,21 @@
+---
+
+- name: update and upgrade system
+  hosts: masters
+  remote_user: root
+  gather_facts: no
+
+  tasks:
+  - name: update system
+    ansible.builtin.apt:
+      update_cache: yes 
+      force_apt_get: yes
+      cache_valid_time: 3600
+  - name: Add an apt key by id from a keyserver
+    ansible.builtin.apt_key:
+      keyserver: keyserver.ubuntu.com
+      id: 0E08A149DE57BFBE
+  - name: upgrade system
+    ansible.builtin.apt:
+      upgrade: dist
+      force_apt_get: yes
